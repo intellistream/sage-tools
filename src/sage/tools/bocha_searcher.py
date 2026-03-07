@@ -143,7 +143,10 @@ class BochaSearcher(BaseTool):
             return {"error": str(exc), "_latency_ms": int((time.monotonic() - t0) * 1000)}
         except json.JSONDecodeError as exc:
             logger.error("Bocha API JSON decode failed for '%s': %s", query, exc)
-            return {"error": "JSON decode error", "_latency_ms": int((time.monotonic() - t0) * 1000)}
+            return {
+                "error": "JSON decode error",
+                "_latency_ms": int((time.monotonic() - t0) * 1000),
+            }
 
     def _parse_response(self, raw: dict[str, Any], max_results: int) -> list[dict[str, Any]]:
         """Convert raw Bocha API response to a list of result dicts."""
@@ -151,9 +154,7 @@ class BochaSearcher(BaseTool):
             logger.warning("Bocha search returned an error: %s", raw["error"])
             return []
 
-        pages: list[dict] = (
-            raw.get("data", {}).get("webPages", {}).get("value", [])
-        )
+        pages: list[dict] = raw.get("data", {}).get("webPages", {}).get("value", [])
 
         results: list[dict[str, Any]] = []
         for rank, page in enumerate(pages[:max_results], start=1):

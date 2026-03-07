@@ -76,6 +76,7 @@ def _get_mcp():
 # Plugin registration — called by sage-mcp aggregator via entry_points
 # ---------------------------------------------------------------------------
 
+
 def register_tools(mcp: Any) -> None:
     """Register all sage.tools MCP tools onto the given FastMCP instance.
 
@@ -92,6 +93,7 @@ def register_tools(mcp: Any) -> None:
         register_tools(mcp)
         mcp.run()
     """
+
     # ── DuckDuckGo search ──────────────────────────────────────────────────
     @mcp.tool()
     async def duckduckgo_search(
@@ -216,9 +218,7 @@ def register_tools(mcp: Any) -> None:
         import os
 
         if not os.getenv("BOCHA_API_KEY"):
-            logger.warning(
-                "bocha_search: BOCHA_API_KEY is not set — returning empty results."
-            )
+            logger.warning("bocha_search: BOCHA_API_KEY is not set — returning empty results.")
             return []
 
         from sage.tools.bocha_searcher import BochaSearcher
@@ -230,6 +230,7 @@ def register_tools(mcp: Any) -> None:
 # ---------------------------------------------------------------------------
 # Build the standalone server (wraps register_tools)
 # ---------------------------------------------------------------------------
+
 
 def _build_server():
     FastMCP = _get_mcp()
@@ -247,6 +248,7 @@ def _build_server():
 # ---------------------------------------------------------------------------
 # Entry-point
 # ---------------------------------------------------------------------------
+
 
 def main(argv: list[str] | None = None) -> None:
     """CLI entry-point for the SAGE Tools MCP server."""
@@ -272,7 +274,8 @@ def main(argv: list[str] | None = None) -> None:
         help="Host for SSE transport (default: 0.0.0.0).",
     )
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Enable verbose logging.",
     )
