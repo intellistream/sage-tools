@@ -1,0 +1,130 @@
+# ============================================================================
+# SAGE Tools Package Configuration
+# ============================================================================
+# isage-tools — L3 agent-callable data-gathering tool set
+# (DuckDuckGo, Arxiv, URL extractor, Nature news, image captioner, OCR text
+#  detector).  Depends on isage-libs (L2) for BaseTool interface.
+# ============================================================================
+
+[build-system]
+requires = ["setuptools>=64", "wheel", "packaging>=24.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isage-tools"
+dynamic = ["version"]
+description = "SAGE Tools - Agent-callable data-gathering tools (L3) for the SAGE Framework"
+readme = "README.md"
+authors = [{ name = "IntelliStream Team", email = "shuhao_zhang@hust.edu.cn" }]
+keywords = [
+    "ai",
+    "sage",
+    "tools",
+    "agents",
+    "search",
+    "arxiv",
+    "duckduckgo",
+    "web-scraping",
+    "streaming",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+dependencies = [
+    # L2 base layer — provides BaseTool interface
+    "isage-libs>=0.2.4",
+    # HTTP clients
+    "requests>=2.28.0",
+    "aiohttp>=3.8.0",
+    # HTML parsing
+    "beautifulsoup4>=4.12.0",
+    # Atom/RSS feed parser (ArxivSearcher)
+    "feedparser>=6.0.0",
+    # Schema validation (DuckDuckGoSearcher)
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+vision = [
+    # Heavy ML deps for image/OCR tools — optional to keep base install light
+    "torch>=2.0.0",
+    "easyocr>=1.7.0",
+]
+mcp = [
+    # MCP server (Claude Desktop, VS Code Copilot, Cursor, etc.)
+    "mcp>=1.0.0",
+]
+llm = [
+    # ImageCaptioner soft-dep
+    "isagellm>=0.1.0",
+]
+dev = [
+    "isage-tools[vision,mcp]",
+    "pytest>=7.4.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "ruff==0.15.4",
+    "pre-commit>=3.0.0",
+    "isage-pypi-publisher>=0.2.1.0",
+]
+
+[project.entry-points."sage.mcp.tools"]
+# Mode 2 (explicit): sage-mcp calls register_tools(mcp) directly.
+# Used here to keep hand-crafted tool descriptions / parameter docs.
+sage_tools = "sage.tools.mcp_server:register_tools"
+
+# [project.entry-points."sage.mcp.modules"]
+# Mode 1 (auto): sage-mcp scans "sage.tools" for BaseTool subclasses and
+# auto-wraps them.  Uncomment the line below to switch to auto mode.
+# sage_tools = "sage.tools"
+
+[project.scripts]
+# MCP server entry-points
+# Run:  python -m sage.tools.mcp_server
+# Or:   isage-tools-mcp                (stdio, works with Claude Desktop)
+# Or:   isage-tools-mcp --transport sse --port 8765  (HTTP/SSE)
+# Or:   uvx isage-tools  (after PyPI publish, requires mcp extra)
+isage-tools-mcp = "sage.tools.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/intellistream/sage-tools"
+Repository = "https://github.com/intellistream/sage-tools"
+Issues = "https://github.com/intellistream/sage-tools/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "sage.tools._version.__version__" }
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md", "py.typed"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --color=yes"
+pythonpath = ["src"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow tests",
+    "fast: Fast tests",
+    "network: Network tests (require internet)",
+    "smoke: Smoke tests (quick validation)",
+]
