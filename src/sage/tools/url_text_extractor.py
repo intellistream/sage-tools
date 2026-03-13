@@ -7,7 +7,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from sage.libs.foundation.tools.tool import BaseTool
+from sage.libs.foundation.tools import BaseTool
 
 
 class URLTextExtractorTool(BaseTool):

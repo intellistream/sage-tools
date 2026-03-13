@@ -32,7 +32,7 @@ from typing import Any
 
 import requests
 
-from sage.libs.foundation.tools.tool import BaseTool
+from sage.libs.foundation.tools import BaseTool
 
 logger = logging.getLogger(__name__)
 

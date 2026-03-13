@@ -4,7 +4,7 @@
 
 `isage-tools` provides lightweight, composable tool implementations that SAGE
 agentic pipelines can call to fetch information from the web, academic databases,
-and local images.  Each tool extends `BaseTool` from `isage-libs` (L2).
+and local images. Each tool extends `BaseTool` from `isage-common` (L1).
 
 > **MCP support:** All tools are also served as a [Model Context Protocol](https://modelcontextprotocol.io) server so any MCP-compatible AI client (Claude Desktop, VS Code Copilot, Cursor …) can call them directly — no integration code needed.
 
@@ -15,7 +15,7 @@ and local images.  Each tool extends `BaseTool` from `isage-libs` (L2).
 | Package | `isage-tools` |
 | Import path | `sage.tools` |
 | Layer | **L3** |
-| Depends on | `isage-libs` (L2) — `BaseTool` interface |
+| Depends on | `isage-common` (L1) — `BaseTool` interface |
 
 ## Available tools
 
@@ -155,23 +155,24 @@ pytest -v
 
 ## Backward compatibility
 
-All public classes have backward-compat aliases matching the original names in
-`sage.middleware.operators.tools`:
+All public classes are imported from `sage.tools`.
+
+If you still have legacy imports from historical middleware modules, migrate to
+`sage.tools` directly:
 
 ```python
-# Old (deprecated — still works via sage-middleware re-export)
+# Old (legacy path)
 from sage.middleware.operators.tools import ArxivSearcher
 
-# New (preferred)
+# New (preferred, stable package path)
 from sage.tools import ArxivSearcher
 ```
 
 ## Note on BochaSearchTool
 
-`BochaSearchTool` (and `EnhancedBochaSearchTool`) are **not** part of
-`isage-tools` because they depend on `sage.middleware.operators.context` types
-(`ModelContext`, `SearchSession`, etc.).  They remain in
-`sage.middleware.operators.tools.searcher_tool`.
+`BochaSearchTool` / `EnhancedBochaSearchTool` from legacy middleware modules are
+outside this package boundary. Use `sage.tools.BochaSearcher` in `isage-tools`
+for the standalone/search-tool use case.
 
 ---
 

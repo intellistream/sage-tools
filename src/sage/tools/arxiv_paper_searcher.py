@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-from sage.libs.foundation.tools.tool import BaseTool
+from sage.libs.foundation.tools import BaseTool
 
 
 class ArxivPaperSearcher(BaseTool):

@@ -2,8 +2,8 @@
 sage.tools — Agent-callable data-gathering tools (L3)
 
 Provides lightweight, composable search / extraction tools that can be called
-from SAGE agentic pipelines.  Each tool extends ``BaseTool`` from
-``sage.libs.foundation.tools.tool``.
+from SAGE agentic pipelines.  Each tool extends ``BaseTool`` exported by
+``sage.libs.foundation.tools``.
 
 Available tools
 ---------------

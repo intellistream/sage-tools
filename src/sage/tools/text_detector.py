@@ -7,7 +7,7 @@ Requires ``torch`` and ``easyocr``  (optional extra ``isage-tools[vision]``).
 import os
 import time
 
-from sage.libs.foundation.tools.tool import BaseTool
+from sage.libs.foundation.tools import BaseTool
 
 # Lazy import: torch is an optional heavy dependency (isage-tools[vision]).
 # The module will import cleanly without torch; errors only surface at execute().

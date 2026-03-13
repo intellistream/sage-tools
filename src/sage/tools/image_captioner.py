@@ -7,7 +7,7 @@ Requires ``isagellm`` (optional extra ``isage-tools[llm]``).
 import os
 import time
 
-from sage.libs.foundation.tools.tool import BaseTool
+from sage.libs.foundation.tools import BaseTool
 
 try:
     from isagellm import UnifiedInferenceClient  # type: ignore[import-untyped]
